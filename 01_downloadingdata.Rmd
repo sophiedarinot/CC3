@@ -1,0 +1,374 @@
+---
+title: "01_downloading data"
+output: html_notebook
+---
+
+On télécharge les métadatas avec nano dans le terminal.
+```{r}
+uter_metadata <- read.delim(file.choose(), header = TRUE, sep = ",")
+```
+Ne trouvant pas le dossier, j'utilise la commande "file.choose()" pour le choisir manuellement.
+
+```{bash}
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003037/SRR8003037_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003037/SRR8003037_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003051/SRR8003051_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003051/SRR8003051_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003060/SRR8003060_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003060/SRR8003060_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003076/SRR8003076_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003076/SRR8003076_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003078/SRR8003078_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003078/SRR8003078_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003020/SRR8003020_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003020/SRR8003020_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003021/SRR8003021_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003021/SRR8003021_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003022/SRR8003022_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003022/SRR8003022_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003023/SRR8003023_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003023/SRR8003023_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003024/SRR8003024_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003024/SRR8003024_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003025/SRR8003025_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003025/SRR8003025_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003026/SRR8003026_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003026/SRR8003026_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003027/SRR8003027_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003027/SRR8003027_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003028/SRR8003028_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003028/SRR8003028_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003029/SRR8003029_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003029/SRR8003029_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003030/SRR8003030_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003030/SRR8003030_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003031/SRR8003031_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003031/SRR8003031_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003032/SRR8003032_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003032/SRR8003032_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003033/SRR8003033_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003033/SRR8003033_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003034/SRR8003034_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003034/SRR8003034_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003036/SRR8003036_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003036/SRR8003036_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003038/SRR8003038_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003038/SRR8003038_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003039/SRR8003039_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003039/SRR8003039_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003040/SRR8003040_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003040/SRR8003040_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003041/SRR8003041_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003041/SRR8003041_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003042/SRR8003042_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003042/SRR8003042_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003043/SRR8003043_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003043/SRR8003043_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003044/SRR8003044_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003044/SRR8003044_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003045/SRR8003045_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003045/SRR8003045_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003046/SRR8003046_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003046/SRR8003046_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003047/SRR8003047_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003047/SRR8003047_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003048/SRR8003048_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003048/SRR8003048_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003049/SRR8003049_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003049/SRR8003049_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003050/SRR8003050_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003050/SRR8003050_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003051/SRR8003051_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003051/SRR8003051_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003052/SRR8003052_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003052/SRR8003052_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003054/SRR8003054_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003054/SRR8003054_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003055/SRR8003055_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003055/SRR8003055_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003056/SRR8003056_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003056/SRR8003056_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003057/SRR8003057_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003057/SRR8003057_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003058/SRR8003058_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003058/SRR8003058_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003061/SRR8003061_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003061/SRR8003061_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003062/SRR8003062_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003062/SRR8003062_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003063/SRR8003063_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003063/SRR8003063_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003064/SRR8003064_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003064/SRR8003064_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003065/SRR8003065_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003065/SRR8003065_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003067/SRR8003067_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003067/SRR8003067_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003068/SRR8003068_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003068/SRR8003068_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003069/SRR8003069_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003069/SRR8003069_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003070/SRR8003070_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003070/SRR8003070_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003071/SRR8003071_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003071/SRR8003071_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003072/SRR8003072_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003072/SRR8003072_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003073/SRR8003073_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003073/SRR8003073_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003074/SRR8003074_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003074/SRR8003074_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003075/SRR8003075_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003075/SRR8003075_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003079/SRR8003079_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003079/SRR8003079_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003080/SRR8003080_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003080/SRR8003080_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003081/SRR8003081_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003081/SRR8003081_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003082/SRR8003082_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003082/SRR8003082_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003083/SRR8003083_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003083/SRR8003083_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003084/SRR8003084_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003084/SRR8003084_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003085/SRR8003085_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003085/SRR8003085_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003086/SRR8003086_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003086/SRR8003086_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003088/SRR8003088_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003088/SRR8003088_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003089/SRR8003089_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003089/SRR8003089_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003090/SRR8003090_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003090/SRR8003090_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003091/SRR8003091_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003091/SRR8003091_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003092/SRR8003092_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003092/SRR8003092_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003093/SRR8003093_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003093/SRR8003093_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003094/SRR8003094_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003094/SRR8003094_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003095/SRR8003095_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003095/SRR8003095_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003096/SRR8003096_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003096/SRR8003096_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003097/SRR8003097_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003097/SRR8003097_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003099/SRR8003099_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003099/SRR8003099_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003100/SRR8003100_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/000/SRR8003100/SRR8003100_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003101/SRR8003101_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/001/SRR8003101/SRR8003101_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003102/SRR8003102_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/002/SRR8003102/SRR8003102_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003104/SRR8003104_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/004/SRR8003104/SRR8003104_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003105/SRR8003105_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/005/SRR8003105/SRR8003105_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003106/SRR8003106_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003106/SRR8003106_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003107/SRR8003107_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003107/SRR8003107_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003108/SRR8003108_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003108/SRR8003108_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003109/SRR8003109_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003109/SRR8003109_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003066/SRR8003066_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/006/SRR8003066/SRR8003066_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003077/SRR8003077_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003077/SRR8003077_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003087/SRR8003087_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/007/SRR8003087/SRR8003087_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003098/SRR8003098_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/008/SRR8003098/SRR8003098_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003103/SRR8003103_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003103/SRR8003103_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003053/SRR8003053_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/003/SRR8003053/SRR8003053_2.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003059/SRR8003059_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR800/009/SRR8003059/SRR8003059_2.fastq.gz
+```
+
+```{bash}
+gzip -d ~/CC3/SRR8003037_1.fastq.gz
+gzip -d ~/CC3/SRR8003037_2.fastq.gz
+gzip -d ~/CC3/SRR8003051_1.fastq.gz
+gzip -d ~/CC3/SRR8003051_2.fastq.gz
+gzip -d ~/CC3/SRR8003060_1.fastq.gz
+gzip -d ~/CC3/SRR8003060_2.fastq.gz
+gzip -d ~/CC3/SRR8003076_1.fastq.gz
+gzip -d ~/CC3/SRR8003076_2.fastq.gz
+gzip -d ~/CC3/SRR8003078_1.fastq.gz
+gzip -d ~/CC3/SRR8003078_2.fastq.gz
+gzip -d ~/CC3/SRR8003020_1.fastq.gz
+gzip -d ~/CC3/SRR8003020_2.fastq.gz
+gzip -d ~/CC3/SRR8003021_1.fastq.gz
+gzip -d ~/CC3/SRR8003021_2.fastq.gz
+gzip -d ~/CC3/SRR8003022_1.fastq.gz
+gzip -d ~/CC3/SRR8003022_2.fastq.gz
+gzip -d ~/CC3/SRR8003023_1.fastq.gz
+gzip -d ~/CC3/SRR8003023_2.fastq.gz
+gzip -d ~/CC3/SRR8003024_1.fastq.gz
+gzip -d ~/CC3/SRR8003024_2.fastq.gz
+gzip -d ~/CC3/SRR8003025_1.fastq.gz
+gzip -d ~/CC3/SRR8003025_2.fastq.gz
+gzip -d ~/CC3/SRR8003026_1.fastq.gz
+gzip -d ~/CC3/SRR8003026_2.fastq.gz
+gzip -d ~/CC3/SRR8003027_1.fastq.gz
+gzip -d ~/CC3/SRR8003027_2.fastq.gz
+gzip -d ~/CC3/SRR8003028_1.fastq.gz
+gzip -d ~/CC3/SRR8003028_2.fastq.gz
+gzip -d ~/CC3/SRR8003029_1.fastq.gz
+gzip -d ~/CC3/SRR8003029_2.fastq.gz
+gzip -d ~/CC3/SRR8003030_1.fastq.gz
+gzip -d ~/CC3/SRR8003030_2.fastq.gz
+gzip -d ~/CC3/SRR8003031_1.fastq.gz
+gzip -d ~/CC3/SRR8003031_2.fastq.gz
+gzip -d ~/CC3/SRR8003032_1.fastq.gz
+gzip -d ~/CC3/SRR8003032_2.fastq.gz
+gzip -d ~/CC3/SRR8003033_1.fastq.gz
+gzip -d ~/CC3/SRR8003033_2.fastq.gz
+gzip -d ~/CC3/SRR8003034_1.fastq.gz
+gzip -d ~/CC3/SRR8003034_2.fastq.gz
+gzip -d ~/CC3/SRR8003036_1.fastq.gz
+gzip -d ~/CC3/SRR8003036_2.fastq.gz
+gzip -d ~/CC3/SRR8003038_1.fastq.gz
+gzip -d ~/CC3/SRR8003038_2.fastq.gz
+gzip -d ~/CC3/SRR8003039_1.fastq.gz
+gzip -d ~/CC3/SRR8003039_2.fastq.gz
+gzip -d ~/CC3/SRR8003040_1.fastq.gz
+gzip -d ~/CC3/SRR8003040_2.fastq.gz
+gzip -d ~/CC3/SRR8003041_1.fastq.gz
+gzip -d ~/CC3/SRR8003041_2.fastq.gz
+gzip -d ~/CC3/SRR8003042_1.fastq.gz
+gzip -d ~/CC3/SRR8003042_2.fastq.gz
+gzip -d ~/CC3/SRR8003043_1.fastq.gz
+gzip -d ~/CC3/SRR8003043_2.fastq.gz
+gzip -d ~/CC3/SRR8003044_1.fastq.gz
+gzip -d ~/CC3/SRR8003044_2.fastq.gz
+gzip -d ~/CC3/SRR8003045_1.fastq.gz
+gzip -d ~/CC3/SRR8003045_2.fastq.gz
+gzip -d ~/CC3/SRR8003046_1.fastq.gz
+gzip -d ~/CC3/SRR8003046_2.fastq.gz
+gzip -d ~/CC3/SRR8003047_1.fastq.gz
+gzip -d ~/CC3/SRR8003047_2.fastq.gz
+gzip -d ~/CC3/SRR8003048_1.fastq.gz
+gzip -d ~/CC3/SRR8003048_2.fastq.gz
+gzip -d ~/CC3/SRR8003049_1.fastq.gz
+gzip -d ~/CC3/SRR8003049_2.fastq.gz
+gzip -d ~/CC3/SRR8003050_1.fastq.gz
+gzip -d ~/CC3/SRR8003050_2.fastq.gz
+gzip -d ~/CC3/SRR8003052_1.fastq.gz
+gzip -d ~/CC3/SRR8003052_2.fastq.gz
+gzip -d ~/CC3/SRR8003054_1.fastq.gz
+gzip -d ~/CC3/SRR8003054_2.fastq.gz
+gzip -d ~/CC3/SRR8003055_1.fastq.gz
+gzip -d ~/CC3/SRR8003055_2.fastq.gz
+gzip -d ~/CC3/SRR8003056_1.fastq.gz
+gzip -d ~/CC3/SRR8003056_2.fastq.gz
+gzip -d ~/CC3/SRR8003057_1.fastq.gz
+gzip -d ~/CC3/SRR8003057_2.fastq.gz
+gzip -d ~/CC3/SRR8003058_1.fastq.gz
+gzip -d ~/CC3/SRR8003058_2.fastq.gz
+gzip -d ~/CC3/SRR8003061_1.fastq.gz
+gzip -d ~/CC3/SRR8003061_2.fastq.gz
+gzip -d ~/CC3/SRR8003062_1.fastq.gz
+gzip -d ~/CC3/SRR8003062_2.fastq.gz
+gzip -d ~/CC3/SRR8003063_1.fastq.gz
+gzip -d ~/CC3/SRR8003063_2.fastq.gz
+gzip -d ~/CC3/SRR8003064_1.fastq.gz
+gzip -d ~/CC3/SRR8003064_2.fastq.gz
+gzip -d ~/CC3/SRR8003065_1.fastq.gz
+gzip -d ~/CC3/SRR8003065_2.fastq.gz
+gzip -d ~/CC3/SRR8003067_1.fastq.gz
+gzip -d ~/CC3/SRR8003067_2.fastq.gz
+gzip -d ~/CC3/SRR8003068_1.fastq.gz
+gzip -d ~/CC3/SRR8003068_2.fastq.gz
+gzip -d ~/CC3/SRR8003069_1.fastq.gz
+gzip -d ~/CC3/SRR8003069_2.fastq.gz
+gzip -d ~/CC3/SRR8003070_1.fastq.gz
+gzip -d ~/CC3/SRR8003070_2.fastq.gz
+gzip -d ~/CC3/SRR8003071_1.fastq.gz
+gzip -d ~/CC3/SRR8003071_2.fastq.gz
+gzip -d ~/CC3/SRR8003072_1.fastq.gz
+gzip -d ~/CC3/SRR8003072_2.fastq.gz
+gzip -d ~/CC3/SRR8003073_1.fastq.gz
+gzip -d ~/CC3/SRR8003073_2.fastq.gz
+gzip -d ~/CC3/SRR8003074_1.fastq.gz
+gzip -d ~/CC3/SRR8003074_2.fastq.gz
+gzip -d ~/CC3/SRR8003075_1.fastq.gz
+gzip -d ~/CC3/SRR8003075_2.fastq.gz
+gzip -d ~/CC3/SRR8003079_1.fastq.gz
+gzip -d ~/CC3/SRR8003079_2.fastq.gz
+gzip -d ~/CC3/SRR8003080_1.fastq.gz
+gzip -d ~/CC3/SRR8003080_2.fastq.gz
+gzip -d ~/CC3/SRR8003081_1.fastq.gz
+gzip -d ~/CC3/SRR8003081_2.fastq.gz
+gzip -d ~/CC3/SRR8003082_1.fastq.gz
+gzip -d ~/CC3/SRR8003082_2.fastq.gz
+gzip -d ~/CC3/SRR8003083_1.fastq.gz
+gzip -d ~/CC3/SRR8003083_2.fastq.gz
+gzip -d ~/CC3/SRR8003084_1.fastq.gz
+gzip -d ~/CC3/SRR8003084_2.fastq.gz
+gzip -d ~/CC3/SRR8003085_1.fastq.gz
+gzip -d ~/CC3/SRR8003085_2.fastq.gz
+gzip -d ~/CC3/SRR8003086_1.fastq.gz
+gzip -d ~/CC3/SRR8003086_2.fastq.gz
+gzip -d ~/CC3/SRR8003088_1.fastq.gz
+gzip -d ~/CC3/SRR8003088_2.fastq.gz
+gzip -d ~/CC3/SRR8003089_1.fastq.gz
+gzip -d ~/CC3/SRR8003089_2.fastq.gz
+gzip -d ~/CC3/SRR8003090_1.fastq.gz
+gzip -d ~/CC3/SRR8003090_2.fastq.gz
+gzip -d ~/CC3/SRR8003091_1.fastq.gz
+gzip -d ~/CC3/SRR8003091_2.fastq.gz
+gzip -d ~/CC3/SRR8003092_1.fastq.gz
+gzip -d ~/CC3/SRR8003092_2.fastq.gz
+gzip -d ~/CC3/SRR8003093_1.fastq.gz
+gzip -d ~/CC3/SRR8003093_2.fastq.gz
+gzip -d ~/CC3/SRR8003094_1.fastq.gz
+gzip -d ~/CC3/SRR8003094_2.fastq.gz
+gzip -d ~/CC3/SRR8003095_1.fastq.gz
+gzip -d ~/CC3/SRR8003095_2.fastq.gz
+gzip -d ~/CC3/SRR8003096_1.fastq.gz
+gzip -d ~/CC3/SRR8003096_2.fastq.gz
+gzip -d ~/CC3/SRR8003097_1.fastq.gz
+gzip -d ~/CC3/SRR8003097_2.fastq.gz
+gzip -d ~/CC3/SRR8003099_1.fastq.gz
+gzip -d ~/CC3/SRR8003099_2.fastq.gz
+gzip -d ~/CC3/SRR8003100_1.fastq.gz
+gzip -d ~/CC3/SRR8003100_2.fastq.gz
+gzip -d ~/CC3/SRR8003101_1.fastq.gz
+gzip -d ~/CC3/SRR8003101_2.fastq.gz
+gzip -d ~/CC3/SRR8003102_1.fastq.gz
+gzip -d ~/CC3/SRR8003102_2.fastq.gz
+gzip -d ~/CC3/SRR8003104_1.fastq.gz
+gzip -d ~/CC3/SRR8003104_2.fastq.gz
+gzip -d ~/CC3/SRR8003105_1.fastq.gz
+gzip -d ~/CC3/SRR8003105_2.fastq.gz
+gzip -d ~/CC3/SRR8003106_1.fastq.gz
+gzip -d ~/CC3/SRR8003106_2.fastq.gz
+gzip -d ~/CC3/SRR8003107_1.fastq.gz
+gzip -d ~/CC3/SRR8003107_2.fastq.gz
+gzip -d ~/CC3/SRR8003108_1.fastq.gz
+gzip -d ~/CC3/SRR8003108_2.fastq.gz
+gzip -d ~/CC3/SRR8003109_1.fastq.gz
+gzip -d ~/CC3/SRR8003109_2.fastq.gz
+gzip -d ~/CC3/SRR8003066_1.fastq.gz
+gzip -d ~/CC3/SRR8003066_2.fastq.gz
+gzip -d ~/CC3/SRR8003077_1.fastq.gz
+gzip -d ~/CC3/SRR8003077_2.fastq.gz
+gzip -d ~/CC3/SRR8003087_1.fastq.gz
+gzip -d ~/CC3/SRR8003087_2.fastq.gz
+gzip -d ~/CC3/SRR8003098_1.fastq.gz
+gzip -d ~/CC3/SRR8003098_2.fastq.gz
+gzip -d ~/CC3/SRR8003103_1.fastq.gz
+gzip -d ~/CC3/SRR8003103_2.fastq.gz
+gzip -d ~/CC3/SRR8003053_1.fastq.gz
+gzip -d ~/CC3/SRR8003053_2.fastq.gz
+gzip -d ~/CC3/SRR8003059_1.fastq.gz
+gzip -d ~/CC3/SRR8003059_2.fastq.gz
+```
