@@ -1,0 +1,248 @@
+---
+title: "CC3"
+output: 
+  github_document:
+    toc: TRUE
+    toc_depth: 2
+---
+#Les données
+
+Les séquences sont chargées à partir de European Nucleotide Archive puis elles sont dézipées. Tout cela dans le "01_downloadingdata.Rmd". Les métadatas sont aussi chargées.
+
+Ne trouvant pas le dossier, j'utilise la commande "file.choose()" pour le choisir manuellement.
+
+```{r}
+path <- "~/CC3"
+list.files(path)
+```
+
+Les Forwards et les Reverses sont séparés.
+```{r}
+fnFs <- sort(list.files(path, pattern="_1.fastq", full.names = TRUE))
+fnRs <- sort(list.files(path, pattern="_2.fastq", full.names = TRUE))
+
+sample.names <- sapply(strsplit(basename(fnFs), "_"), `[`, 1)
+```
+
+## Filtration des données
+
+```{r}
+library("dada2")
+```
+
+Les profils de qualités sont plottés pour les 6 premiers fichiers fastq.
+```{r}
+plotQualityProfile(fnFs[1:6])
+```
+
+Les profils de qualité des Forwards sont bons, il faudrait trimer vers 290.
+
+```{r}
+plotQualityProfile(fnRs[1:6])
+```
+
+Les plots de qualité des Reverses sont beaucoup moins bons que ceux des Forwards, comme on pouvait s'y attendre. Nous allons donc trimer vers 200.
+
+```{r}
+filtFs <- file.path(path,"filtered", paste0(sample.names, "_F_filt.fasta.gz"))
+filtRs <- file.path(path,"filtered", paste0(sample.names, "_R_filt.fasta.gz"))
+names(filtFs) <- sample.names
+names(filtRs) <- sample.names
+```
+
+```{r}
+out <- filterAndTrim(fnFs, filtFs, fnRs, filtRs, truncLen=c(290,200),
+              maxN=0, maxEE=c(2,2), truncQ=2, rm.phix=TRUE,
+              compress=TRUE, multithread=TRUE)
+head(out)
+```
+
+## Débruitage des données
+
+On calcule les taux d'erreurs.
+```{r}
+errF <- learnErrors(filtFs, multithread=TRUE)
+```
+
+```{r}
+errR <- learnErrors(filtRs, multithread=TRUE)
+```
+
+Puis on visualise les taux d'erreurs.
+```{r}
+plotErrors(errF, nominalQ=TRUE)
+```
+
+```{r}
+plotErrors(errR, nominalQ=TRUE)
+```
+
+Et on débruite avec dada.
+```{r}
+dadaFs <- dada(filtFs, err=errF, multithread=TRUE)
+```
+
+```{r}
+dadaRs <- dada(filtRs, err=errR, multithread=TRUE)
+```
+
+## Paires de reads
+
+On lie les paires de reads.
+```{r}
+mergers <- mergePairs(dadaFs, filtFs, dadaRs, filtRs, verbose=TRUE)
+```
+
+```{r}
+head(mergers[[1]])
+```
+
+Et on forme une table d'observation des séquences fusionnées.
+```{r}
+seqtab <- makeSequenceTable(mergers)
+dim(seqtab)
+```
+
+```{r}
+table(nchar(getSequences(seqtab)))
+```
+
+On observe que les paires de read créées sont d'une longueur d'à-peu-près 457-459bp et 475-478bp.
+
+## Chimères
+
+On enlève les chimères.
+```{r}
+seqtab.nochim <- removeBimeraDenovo(seqtab, method="consensus", multithread=TRUE, verbose=TRUE)
+```
+
+```{r}
+dim(seqtab.nochim)
+```
+28 869 chimères ont été enlevées, il reste 13 954 paires de reads.
+
+```{r}
+sum(seqtab.nochim)/sum(seqtab)
+```
+La fréquence chimérique est de 0.64%.
+
+On vérifie que la perte de read n'est pas trrop importante à chaque étape de filtration.
+```{r}
+getN <- function(x) sum(getUniques(x))
+track <- cbind(out, sapply(dadaFs, getN), sapply(dadaRs, getN), sapply(mergers, getN), rowSums(seqtab.nochim))
+
+colnames(track) <- c("input", "filtered", "denoisedF", "denoisedR", "merged", "nonchim")
+rownames(track) <- sample.names
+head(track)
+```
+Cela me semble bon.
+
+## Taxonomie
+
+On utilise une taxonomie de la base de donnée Silva.
+```{r}
+taxa <- assignTaxonomy(seqtab.nochim, "~/silva_nr99_v138_train_set.fa.gz", multithread = TRUE)
+```
+
+```{r}
+taxa.print <- taxa
+rownames(taxa.print) <- NULL
+head(taxa.print)
+```
+On remarque que la taxonomie s'arrête au Genre. L'attribution de l'espèce prenant trop de temps (>24h), elle n'a pas été effectuée.
+
+## Phyloseq
+
+```{r}
+library("phyloseq")
+library("dada2")
+library("ggplot2")
+theme_set(theme_bw())
+```
+Afin de construire le tableau "samdf", un tableau Excel a été créé à partir des métadatas chargées plutôt. Ayant eu du mal à attribuer directement les données depuis les métadatas chargé, la solution la plus simple m'a paru de faire un tableau Excel à la main. Ainsi le tableau comporte l'axe des ordonnées correspond aux données fastq, il y a ensuite seulement le parametre de Group, qui regroupe l'étata de santé du patient et le site de prélevement: "TP", "TS", "CP", "CS". Une autre colonne de description à été ajoutée afin de décrire les groupes et surtout de pouvoir plotter a PCoA: T "carrie", C "sain", P "plaque-dentaire", S "salive".
+```{r}
+samdf <- as.data.frame(read.csv("uter_metadata.csv", header=T, sep=",",row.names = 1, stringsAsFactor=FALSE))
+colnames(samdf) <- c("Group","Description")
+```
+
+On construit l'objet phyloseq.
+```{r}
+ps <- phyloseq(otu_table(seqtab.nochim, taxa_are_rows=FALSE), 
+               sample_data(samdf), 
+               tax_table(taxa))
+ps
+```
+
+Et on associe la taxonomie aux séquences ADN.
+```{r}
+dna <- Biostrings::DNAStringSet(taxa_names(ps))
+names(dna) <- taxa_names(ps)
+ps <- merge_phyloseq(ps, dna)
+taxa_names(ps) <- paste0("ASV", seq(ntaxa(ps)))
+ps
+```
+
+## Alpha diversité
+
+On plot l'alpha-diversité selon les indices de Shannon, Simpson, Chao et ACE, tel que fait dans l'article, afin de pouvoir comparer.
+```{r}
+plot_richness(ps, x="Group", measures=c("Shannon", "Simpson","Chao","ACE"), color="Group")
+```
+
+Dans l'article, une différence significative puvait être observée ente les sites de prélevement (CP+TP vs CS+TS), mais pas entre état de santé sain ou carrié. Il semble que l'on puisse faire les mêmes suppositions ici, CS et TS s'étirrant toujours vers le bas, mais je ne pense pas que l'on puisse faire d'affirmation ne sachant pas si c'est significatif ou non.
+
+## PCoA
+
+On va plotter une PCoA, pour cela il a fallu ajjouter une colonne à "samdf" sinon les couleurs n'apparaissaient pas.
+```{r}
+ps.prop <- transform_sample_counts(ps, function(otu) otu/sum(otu))
+ord.pcoa.bray <- ordinate(ps.prop, method="PCoA", distance="bray")
+```
+
+```{r}
+plot_ordination(ps.prop, ord.pcoa.bray, color="Group", title="Bray PCoA")
+```
+
+La PCoA me semble fausse, d'abord très géométrique même si ce n'est pas un argument valable, mais aussi les groups CS (sain salive) et TP (carrie plaque-dentaire) forment un cluster, ce qui n'est pas un résultat logique ni n'a été observé dans l'artique. Au contraire, deux cluster étaient attendus: CP+TP (les plaques-dentaire) et CS+TS (les sites salive). Je pense que le problème vient de la fonction mathématique utilisée dans "transform_sample_counts()", l'ayant modifiée à plusieurs reprises et le graph se modifiant, cependant je n'ai pas été en mesure de trouver la bonne formule.
+
+## Distribution des bactéries prédominantes
+
+Dans l'article, la distribution a été observée au niveau du Phylum et du Genus. C'est donc ce que nous allons essayer de reproduire.
+```{r}
+top20 <- names(sort(taxa_sums(ps), decreasing=TRUE))[1:20]
+ps.top20 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
+ps.top20 <- prune_taxa(top20, ps.top20)
+plot_bar(ps.top20, x="Group", fill="Phylum") + facet_grid(~Group, scales = "free_x")
+```
+
+Ici on peut observé que les 20 phylum prédominants sont des Actinobacteriota, Bactéroidota, Firmicutes, Fusobactériota et Pastecibactéria. Les quatres premiers sont retrouvés dans l'article, mais pas les Patescibacteria. Au contraire, les Proteobacteria et Saccharibacteria sont prédominantes dans l'article mais pas ici. De plus la répartition des phylum prédominants dans les quatres groupes sont bien différentes. Dans l'article les Firmicutes étaient très présents dans les quatres groupes, ici seulement dans CP et TS, deux groupes qui sont censés être significativement différents. De même les Bacteroidota ne sont pas retrouvés partout contrairement à l'article. Et dernier point à soulever, les Fusobacteriota sont extremement abondants dans la majorité des groupes ici, alors qu'ils sont peu abondant dans les groupes salives de l'article. Ceci est peut-être due au fait que nous avons des ASVs et non pas des OTUs, ou bien la base de données taxonomique ne correspond pas à notre jeu de données.
+
+```{r}
+top50 <- names(sort(taxa_sums(ps), decreasing=TRUE))[1:50]
+ps.top50 <- transform_sample_counts(ps, function(OTU) OTU/sum(OTU))
+ps.top50 <- prune_taxa(top50, ps.top50)
+plot_bar(ps.top50, x="Group", fill="Genus") + facet_grid(~Group, scales = "free_x")
+```
+
+Pour le Genre, j'ai plotter les 50 plus abondants, sinon il n'y avait pas assez de donnée qui resortait. Première remarque, il y a beaucoup moins de diversité que ce qui est observé dans l'article. 7 genres en moins sont observés. Cependant ici l'analyse semble être un peut plus censé que jusqu'à présent, en effet les Prevotella et Porphyromonas sont significativement plus présent dans les groupes salivaires que plaque dentaire. Par contre dans l'article le genre Leptotrichia était très significativement plus présent dans les plaques dentaire que la salive, ce qui n'est pas observé ici, excepté pour le groupe CS. Mes explications sont les mêmes que précédemment, ASVs vs OTUs, et peut-être mauvaise correspondance au niveau de la base de données taxonomique.
+
+## Diagramme de Venn
+
+J'ai ensuite tenté de faire un diagramme de Venn. Le problème est au niveau du tableau de données. Il m'aurait fallu la taxonomie en fonction des quatres groupes CS, CP, TS, TP. Mais pour cela il me fallait combiner trois tableaux (taxa, samdf, seqtab.nochim), ce dont j'ai été incapable en codant après plusieurs tentatives infructueuse. Et face au nombre exorbitant de séquences, j'ai abandonné l'idée de le faire sur Excel, ce dont j'aurai été capable si il n'y avait pas 13 954 séquences.
+```{r}
+BiocManager::install("VennDiagram")
+library(VennDiagram)
+```
+
+Ici j'ai créé un premier tableau remplaceant les 89 fastq par leurs groupes respectifs, la prochaine étape étant d'associer les séquences ADN aux fastq, et donc la taxonomie associée au séquences ADN aurait été associée au groupes.
+```{r}
+table1 <- seqtab.nochim
+row.names(table1) <- c("TP","TP","TP","TP","TP","TP","TP","TP","TP","TP","TP","TP","TP","TP","CP","TP","TP","TP","TP","TS","TS","TS","TS","TS","TS","TS","TS","TS","TS","CP","CP","CP","CP","CP","CP","CP","CP","CP","CP","TS","TS","TS","TS","TS","TS","TS","TS","TS","TS","CP","CP","CP","CP","CP","CP","CP","CP","CP","CP","CS","CS","CS","CS","CS","CS","CS","TS","TS","TS","CS","CS","CS","CS","CS","CS","CS","CS","CS","CS","CS","CS","CS","CS","TP","TP","TP","TP","TP","TP")
+```
+J'ai donc abandonné la création du diagramme de Venne même si l'analyse comparative aurait été très intéressante.
+
+J'ai ensuite tenté de faire un test Wilcoxon rank-sum, ainsi qu'un network analysis, mais ai échoué dans les deux cas.
+
+## Conclusion
+
+Mes maigres compétences en Phyloseq ne m'ont pas permis de mener à bien les analyses espérées, mais le peu aboutit semble indique qu'il y avait un problème au niveau de mes analyses. Soit due au ASVs vs OTUs, mais cela me semble étrange car une plus grande diversité aurait du être observé dans ce cas là je pense. Soit le problème vient d'un problème d'incompatibilité entre la base de donnée Silva utilisée et notre jeu de données. Ou alors un autre problème survenu plutôt lors de la filtration des données.
